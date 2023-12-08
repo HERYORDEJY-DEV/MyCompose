@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -33,7 +35,7 @@ class MainActivity : ComponentActivity() {
           color = MaterialTheme.colorScheme.primary
         ) {
           
-          GreetingCard()
+          ListOfGreetingCards()
         }
       }
     }
@@ -42,7 +44,7 @@ class MainActivity : ComponentActivity() {
 
 
 @Composable
-fun GreetingCard() {
+fun GreetingCard(int: Int) {
 //  is expand state
   val isExpanded = remember { mutableStateOf(false) }
 //  padding for if expanded or not
@@ -63,7 +65,7 @@ fun GreetingCard() {
           .padding(bottom = expandedPadding)
       ) {
         Text(text = "Hello")
-        Text(text = "World")
+        Text(text = "World $int")
         
       }
       FilledTonalButton(onClick = { isExpanded.value = !isExpanded.value }) {
@@ -73,11 +75,27 @@ fun GreetingCard() {
   }
 }
 
+// create a list of GreetingCard with compose
+@Composable
+fun ListOfGreetingCards() {
+  val numbers: List<Int> = List(1000) { it }
+  Column {
+    LazyColumn {
+      items(numbers) { number ->
+        
+        GreetingCard(int = number)
+        
+      }
+    }
+  }
+  
+}
+
 
 @Preview(showBackground = true)
 @Composable
 fun GreetingCardPreview() {
   MyComposeTheme {
-    GreetingCard()
+    ListOfGreetingCards()
   }
 }
