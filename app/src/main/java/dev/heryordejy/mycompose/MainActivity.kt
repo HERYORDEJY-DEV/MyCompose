@@ -14,6 +14,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -41,21 +43,31 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun GreetingCard() {
-  Surface(color = MaterialTheme.colorScheme.primary) {
+//  is expand state
+  val isExpanded = remember { mutableStateOf(false) }
+//  padding for if expanded or not
+  val expandedPadding = if (isExpanded.value) 20.dp else 0.dp
+  
+  // A surface container using the 'background' color from the theme
+  Surface(color = MaterialTheme.colorScheme.primary, modifier = Modifier.padding(all = 20.dp)) {
     Row(
       modifier = Modifier
         .fillMaxWidth()
         .padding(16.dp),
       verticalAlignment = Alignment.CenterVertically
     ) {
-      Column(verticalArrangement = Arrangement.Center, modifier = Modifier.weight(1f)) {
+      Column(
+        verticalArrangement = Arrangement.Center,
+        modifier = Modifier
+          .weight(1f)
+          .padding(bottom = expandedPadding)
+      ) {
         Text(text = "Hello")
         Text(text = "World")
         
       }
-      
-      FilledTonalButton(onClick = { /*TODO*/ }) {
-        Text(text = "Show more")
+      FilledTonalButton(onClick = { isExpanded.value = !isExpanded.value }) {
+        Text(text = if (isExpanded.value) "Show less" else "Show more")
       }
     }
   }
