@@ -3,6 +3,9 @@ package dev.heryordejy.mycompose
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,6 +19,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -48,7 +52,12 @@ fun GreetingCard(int: Int) {
 //  is expand state
   val isExpanded = remember { mutableStateOf(false) }
 //  padding for if expanded or not
-  val expandedPadding = if (isExpanded.value) 20.dp else 0.dp
+  val expandedPadding by animateDpAsState(
+    targetValue = if (isExpanded.value) 20.dp else 0.dp,
+    animationSpec = tween(
+      durationMillis = 3000, easing = LinearEasing
+    ), label = "expandedPadding"
+  )
   
   // A surface container using the 'background' color from the theme
   Surface(color = MaterialTheme.colorScheme.primary, modifier = Modifier.padding(all = 20.dp)) {
